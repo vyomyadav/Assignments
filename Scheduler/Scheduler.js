@@ -65,7 +65,7 @@ function correct_time(index) {                    // og-> time zone k -> 012 pre
 	}
 	arr[0]=sum1;
     arr[1] = sum2;
-    console.log(arr);
+    //console.log(arr);
     return arr;
     
 	//here the value will never be over 48 as thats gmt night so no working hrs
@@ -113,9 +113,9 @@ console.log("No free time available");
 else{
 m = correct_time(l);
 var m1 = (m[0]/2);
-console.log(m1);
+//console.log(m1);
 var m2 = (m[1]/2);
-console.log (m2); 
+//console.log (m2); 
 console.log("Candidate time & day:\t");
 if(k1==0){
 nday = day-1;
