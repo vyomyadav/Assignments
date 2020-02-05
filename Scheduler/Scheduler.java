@@ -93,13 +93,13 @@ float og2 = sc.nextFloat();int og4 = (int)(og2*2);
 System.out.println("Enter duration required");
 float time = sc.nextFloat();
 counter = (int)(time*2);
-System.out.println("counter"+counter);
+//System.out.println("counter"+counter);
 System.out.println("Enter free hrs(as 5:30 as 5.5) in of candidate press 0 to exit");
 while(r!=0){
  float k = sc.nextFloat();
  r = (int)(k*2);
  int at = r-og3+48;
- System.out.println("at"+at);
+ //System.out.println("at"+at);
  a[at]=true;
  }
 r=1;
@@ -108,7 +108,7 @@ while(r!=0){
  float k = sc.nextFloat();
  r = (int)(k*2);
  int at = r-og4+48;
- System.out.println("at"+at);
+ //System.out.println("at"+at);
  b[at]=true;
  }
 and();
