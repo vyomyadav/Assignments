@@ -3,6 +3,7 @@ const express = require("express");
 const joi = require("joi");
 const app = express();
 app.use(express.json());
+app.use(express.static("Website"));
 const client = new Client({user:"postgres",
                            password:"postgres",
                            host:"localhost",
@@ -10,7 +11,6 @@ const client = new Client({user:"postgres",
                            database:"portal"
 });
 app.get("/candidate",async (req,res)=>{
-    console.log(req.params.id);
     const rows = await readcandidate(0,2);
     res.send(rows);
 })
@@ -258,6 +258,13 @@ async function putrecruiter(id,username,password,email,phoneno){
     }
 }
 //---------------------------------------------------------------JOBS--------------------------------------------
+//Skills based search
+app.get("/skills/:skill",async (req,res)=>{
+    const skill = req.param.skill;
+    const rows  = await readjobs(skill);
+    res.send(rows);
+})
+
 app.get("/jobs",async (req,res)=>{
     const rows = await readjobs(0,2);
     res.send(rows);
@@ -286,7 +293,7 @@ app.post("/jobs",async (req,res)=>{
             result.success = false;
         }     
     else{    
-    await createjobs(req.body.job_id,req.body.jobname,req.body.salary,req.body.owner,req.body.availability);
+    await createjobs(req.body.job_id,req.body.jobname,req.body.salary,req.body.owner,req.body.availability,req.body.skills);
     result.success = true;
     }}
     catch(e){
@@ -321,7 +328,7 @@ app.put("/jobs",async(req,res)=>{
             result.success = false;
         }
         else
-        result.success = await putjobs(req.body.job_id,req.body.jobname,req.body.salary,req.body.owner,req.body.availability);
+        result.success = await putjobs(req.body.job_id,req.body.jobname,req.body.salary,req.body.owner,req.body.availability,req.body.skills);
     }
     catch(e){
          console.log(e);
@@ -332,6 +339,16 @@ app.put("/jobs",async(req,res)=>{
     }
   
 })
+async function readjobs(skill){
+    try{
+        skill = skill.toUpperCase();
+        const result = await client.query("Select * from jobs where skill = $1",[skill]);
+        return result.rows;
+    }
+    catch(e){
+        return [];
+    }   
+}
 async function readjobs(offset,limit){
     try{
         const result = await client.query("Select * from jobs order by job_id limit $1 offset $2",[limit,offset]);
@@ -341,9 +358,10 @@ async function readjobs(offset,limit){
         return [];
     }   
 }
-async function createjobs(job_id,jobname,salary,owner,availability){
+async function createjobs(job_id,jobname,salary,owner,availability,skill){
     try{
-        await client.query("Insert into jobs (job_id,jobname,salary,owner,availability) values($1,$2,$3,$4,$5)",[job_id,jobname,salary,owner,availability]);
+        skill = skill.toUpperCase();
+        await client.query("Insert into jobs (job_id,jobname,salary,owner,availability,skills) values($1,$2,$3,$4,$5,$6)",[job_id,jobname,salary,owner,availability,skill]);
         return true;
     }
     catch(e){
@@ -361,13 +379,14 @@ async function deletejobs(id){
     }   
     
 }  
-async function putjobs(job_id,jobname,salary,owner,availability){
+async function putjobs(job_id,jobname,salary,owner,availability,skill){
     try{
+       skill = skill.toUpperCase();
        const result = await client.query("select count(*) from jobs where job_id = $1",[job_id]);
        if(result.rows[0].count==0)
        return false
        else
-       await client.query("update jobs set jobname = $1,salary = $2,owner = $3,availability = $4 where job_id = $5",[jobname,salary,owner,availability,job_id]);
+       await client.query("update jobs set jobname = $1,salary = $2,owner = $3,availability = $4,skills = $5 where job_id = $6",[jobname,salary,owner,availability,skill,job_id]);
        return true;
     }
     catch(e){
@@ -524,7 +543,8 @@ function validatejob(jobs){
         jobname: joi.string(),
         salary: joi.number(),
         owner: joi.string(),
-        availability: joi.string()
+        availability: joi.string(),
+        skill: joi.string()
     };
     return joi.validate(jobs,schema);
 }  
