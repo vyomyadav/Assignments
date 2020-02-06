@@ -10,6 +10,7 @@ const client = new Client({user:"postgres",
                            port:5432,
                            database:"portal"
 });
+//----------------------------------------------------------------------Candidate-----------------------------------------------------------------------
 app.get("/candidate",async (req,res)=>{
     const rows = await readcandidate(0,2);
     res.send(rows);
@@ -394,7 +395,7 @@ async function putjobs(job_id,jobname,salary,owner,availability,skill){
         return false;
     }
 }                        
-//------------------------------------------------------Company---------------------------
+//------------------------------------------------------Company----------------------------------------------------------------------------------------------------------
 app.get("/company",async (req,res)=>{
     const rows = await readcompany(0,2);
     res.send(rows);
