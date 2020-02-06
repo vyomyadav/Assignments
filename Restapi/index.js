@@ -10,21 +10,24 @@ const client = new Client({user:"postgres",
                            database:"portal"
 });
 app.get("/candidate",async (req,res)=>{
+    console.log(req.params.id);
     const rows = await readcandidate(0,2);
     res.send(rows);
 })
-app.get("/candidate/1",async (req,res)=>{
-    const rows = await readcandidate(0,2);
+app.get("/candidate/:id",async (req,res)=>{
+    let page = parseInt(req.params.id);
+    let sum = page*2-2;
+    const rows = await readcandidate(sum,2);
     res.send(rows);
 })
-app.get("/candidate/2",async (req,res)=>{
+/*app.get("/candidate/2",async (req,res)=>{
     const rows = await readcandidate(2,2);
     res.send(rows);
 })
 app.get("/candidate/3",async (req,res)=>{
     const rows = await readcandidate(4,2);
     res.send(rows);
-})
+})*/
 
 app.post("/candidate",async (req,res)=>{
     let result = {};
@@ -142,18 +145,20 @@ app.get("/recruiter",async (req,res)=>{                                         
     const rows = await readrecruiter(0,2);
     res.send(rows);
 })
-app.get("/recruiter/1",async (req,res)=>{
-    const rows = await readrecruiter(0,2);
+app.get("/recruiter/:id",async (req,res)=>{
+    let page = parseInt(req.params.id);
+    let sum = page*2-2;
+    const rows = await readrecruiter(sum,2);
     res.send(rows);
 })
-app.get("/recruiter/2",async (req,res)=>{
+/*app.get("/recruiter/2",async (req,res)=>{
     const rows = await readrecruiter(2,2);
     res.send(rows);
 })
 app.get("/recruiter/3",async (req,res)=>{
     const rows = await readrecruiter(4,2);
     res.send(rows);
-})
+})*/
 app.post("/recruiter",async (req,res)=>{
     let result = {};
     try{
@@ -257,18 +262,20 @@ app.get("/jobs",async (req,res)=>{
     const rows = await readjobs(0,2);
     res.send(rows);
 })
-app.get("/jobs/1",async (req,res)=>{
-    const rows = await readjobs(0,2);
+app.get("/jobs/:id",async (req,res)=>{
+    let page = parseInt(req.params.id);
+    let sum = page*2-2;
+    const rows = await readjobs(sum,2);
     res.send(rows);
 })
-app.get("/jobs/2",async (req,res)=>{
+/*app.get("/jobs/2",async (req,res)=>{
     const rows = await readjobs(2,2);
     res.send(rows);
 })
 app.get("/jobs/3",async (req,res)=>{
     const rows = await readjobs(4,2);
     res.send(rows);
-})
+})*/
 
 app.post("/jobs",async (req,res)=>{
     let result = {};
@@ -373,18 +380,20 @@ app.get("/company",async (req,res)=>{
     const rows = await readcompany(0,2);
     res.send(rows);
 })
-app.get("/company/1",async (req,res)=>{
+app.get("/company/:id",async (req,res)=>{
+    let page = parseInt(req.params.id);
+    let sum = page*2-2;
     const rows = await readcompany(0,2);
     res.send(rows);
 })
-app.get("/company/2",async (req,res)=>{
+/*app.get("/company/2",async (req,res)=>{
     const rows = await readcompany(2,2);
     res.send(rows);
 })
 app.get("/company/3",async (req,res)=>{
     const rows = await readcompany(4,2);
     res.send(rows);
-})
+})*/
 app.post("/company",async (req,res)=>{
     let result = {};
     try{
