@@ -267,11 +267,11 @@ async function putrecruiter(id,username,password,email,phoneno){
 app.get("/jobs/skills/:skill",async (req,res)=>{
     const skills = req.params.skill;
     const rows  = await readjobskill(skills);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 app.get("/jobs",async (req,res)=>{
     const rows = await readjobs(0,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 app.get("/jobs/:id",async (req,res)=>{
     let page = parseInt(req.params.id);
