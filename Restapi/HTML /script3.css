@@ -19,6 +19,9 @@
     background: black;
     min-height: 100%;
 }
+.form-box form{
+    margin-bottom: 100px;
+}
 body{
     background:url(background.jpg);
 }
