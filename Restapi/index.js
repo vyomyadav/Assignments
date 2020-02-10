@@ -1,3 +1,4 @@
+
 const {Client} = require("pg");
 const express = require("express");
 const joi = require("joi");
@@ -13,13 +14,13 @@ const client = new Client({user:"postgres",
 //----------------------------------------------------------------------Candidate-----------------------------------------------------------------------
 app.get("/candidate",async (req,res)=>{
     const rows = await readcandidate(0,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 app.get("/candidate/:id",async (req,res)=>{
     let page = parseInt(req.params.id);
     let sum = page*2-2;
     const rows = await readcandidate(sum,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 /*app.get("/candidate/2",async (req,res)=>{
     const rows = await readcandidate(2,2);
@@ -33,7 +34,7 @@ app.get("/candidate/3",async (req,res)=>{
 app.post("/candidate",async (req,res)=>{
     let result = {};
     try{
-    let {error} = await  validateCustomer(req.body);
+    let {error} = await  validateCustomer(req.body,2);
     if(error){
         res.status(404).send(error.details[0].message);
         result.success = false;
@@ -44,10 +45,11 @@ app.post("/candidate",async (req,res)=>{
     }}
     catch(e){
         console.log(e);
+        res.status(400).send(e.details[0].message);
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
         }
 })
 app.delete("/candidate",async (req,res)=>{
@@ -58,17 +60,18 @@ app.delete("/candidate",async (req,res)=>{
     }
     catch(e){
         console.log(e);
+        res.status(400).send(e.details[0].message);
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
 
     }
 })
 app.put("/candidate",async(req,res)=>{
     let result = {};
     try{
-        let {error} = await  validateCustomer(req.body);
+        let {error} = await  validateCustomer(req.body,1);
         if(error){
             res.status(404).send(error.details[0].message);
             result.success = false;
@@ -78,10 +81,11 @@ app.put("/candidate",async(req,res)=>{
     }
     catch(e){
          console.log(e);
+         res.status(400).send(e.details[0].message);
          result.success = false;
     }
     finally{
-       res.send(result);
+       res.status(200).send(result);
     }
   
 })
@@ -144,13 +148,13 @@ async function putcandidate(id,username,password,email,phoneno){
 //------------------------------------Recruiter--------------------------------------------
 app.get("/recruiter",async (req,res)=>{                                               //pagination
     const rows = await readrecruiter(0,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 app.get("/recruiter/:id",async (req,res)=>{
     let page = parseInt(req.params.id);
     let sum = page*2-2;
     const rows = await readrecruiter(sum,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 /*app.get("/recruiter/2",async (req,res)=>{
     const rows = await readrecruiter(2,2);
@@ -163,7 +167,7 @@ app.get("/recruiter/3",async (req,res)=>{
 app.post("/recruiter",async (req,res)=>{
     let result = {};
     try{
-    let {error} = await  validaterecruiter(req.body);
+    let {error} = await  validaterecruiter(req.body,2);
     if(error){
     res.status(404).send(error.details[0].message);
     result.success = false;
@@ -177,7 +181,7 @@ app.post("/recruiter",async (req,res)=>{
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
         }
 })
 app.delete("/recruiter",async (req,res)=>{
@@ -191,14 +195,14 @@ app.delete("/recruiter",async (req,res)=>{
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
 
     }
 })
 app.put("/recruiter",async(req,res)=>{
     let result = {};
     try{
-        let {error} = await  validaterecruiter(req.body);
+        let {error} = await  validaterecruiter(req.body,1);
         if(error){
             res.status(404).send(error.details[0].message);
             result.success = false;
@@ -211,7 +215,7 @@ app.put("/recruiter",async(req,res)=>{
          result.success = false;
     }
     finally{
-       res.send(result);
+       res.status(200).send(result);
     }
   
 })
@@ -258,14 +262,13 @@ async function putrecruiter(id,username,password,email,phoneno){
         return false;
     }
 }
-//---------------------------------------------------------------JOBS--------------------------------------------
+//---------------------------------------------------------------JOBS--------------------------------------------------------------------
 //Skills based search
-app.get("/skills/:skill",async (req,res)=>{
-    const skill = req.param.skill;
-    const rows  = await readjobs(skill);
+app.get("/jobs/skills/:skill",async (req,res)=>{
+    const skills = req.params.skill;
+    const rows  = await readjobskill(skills);
     res.send(rows);
 })
-
 app.get("/jobs",async (req,res)=>{
     const rows = await readjobs(0,2);
     res.send(rows);
@@ -274,7 +277,7 @@ app.get("/jobs/:id",async (req,res)=>{
     let page = parseInt(req.params.id);
     let sum = page*2-2;
     const rows = await readjobs(sum,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 /*app.get("/jobs/2",async (req,res)=>{
     const rows = await readjobs(2,2);
@@ -302,7 +305,7 @@ app.post("/jobs",async (req,res)=>{
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
         }
 })
 app.delete("/jobs",async (req,res)=>{
@@ -316,7 +319,7 @@ app.delete("/jobs",async (req,res)=>{
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
 
     }
 })
@@ -336,17 +339,20 @@ app.put("/jobs",async(req,res)=>{
          result.success = false;
     }
     finally{
-       res.send(result);
+       res.status(200).send(result);
     }
   
 })
-async function readjobs(skill){
+async function readjobskill(skill){
     try{
         skill = skill.toUpperCase();
-        const result = await client.query("Select * from jobs where skill = $1",[skill]);
+        console.log(skill);
+        q = `Select * from jobs where skills = ${skill}`;
+        const result = await client.query(q);
         return result.rows;
     }
     catch(e){
+        console.log(e);
         return [];
     }   
 }
@@ -398,13 +404,13 @@ async function putjobs(job_id,jobname,salary,owner,availability,skill){
 //------------------------------------------------------Company----------------------------------------------------------------------------------------------------------
 app.get("/company",async (req,res)=>{
     const rows = await readcompany(0,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 app.get("/company/:id",async (req,res)=>{
     let page = parseInt(req.params.id);
     let sum = page*2-2;
     const rows = await readcompany(0,2);
-    res.send(rows);
+    res.status(200).send(rows);
 })
 /*app.get("/company/2",async (req,res)=>{
     const rows = await readcompany(2,2);
@@ -431,7 +437,7 @@ app.post("/company",async (req,res)=>{
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
         }
 })
 app.delete("/company",async (req,res)=>{
@@ -445,7 +451,7 @@ app.delete("/company",async (req,res)=>{
         result.success = false;
     }
     finally{
-        res.send(result);
+        res.status(200).send(result);
 
     }
 })
@@ -465,7 +471,7 @@ app.put("/company",async(req,res)=>{
          result.success = false;
     }
     finally{
-       res.send(result);
+       res.status(200).send(result);
     }
   
 })
@@ -500,7 +506,7 @@ async function deletecompany(id){
 }  
 async function putcompany(company_id,company_name,description){
     try{
-       const result = await client.query("select count(*) from company where company_id = $1",[job_id]);
+       const result = await client.query("select count(*) from company where company_id = $1",[company_id]);
        if(result.rows[0].count==0)
        return false
        else
@@ -512,34 +518,62 @@ async function putcompany(company_id,company_name,description){
         return false;
     }
 }    
-function validateCustomer(customer){
-    const schema ={
-        username: joi.string().min(3).max(30).required(),
-        password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-        email: joi.string().email({ minDomainAtoms: 2 }),
-        phoneno: joi.number()
-    };
-    return joi.validate(customer,schema);
+function validateCustomer(customer,i){
+    var schema1 = {};
+    if(i==1){
+        schema1 ={
+            candidate_id: joi.number().integer(),
+            username: joi.string().min(3).max(30).required(),
+            password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+            email: joi.string().email({ minDomainAtoms: 2 }),
+            phoneno: joi.number()
+        };
+
+    }
+    if(i==2){
+        schema1 ={
+            username: joi.string().min(3).max(30).required(),
+            password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+            email: joi.string().email({ minDomainAtoms: 2 }),
+            phoneno: joi.number()
+        };
+
+    }
+    return joi.validate(customer,schema1);
 }
 function validaterecruiter(recruiter){
-    const schema1 ={
-        username: joi.string().min(3).max(30).required(),
-        password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-        email: joi.string().email({ minDomainAtoms: 2 }),
-        phoneno: joi.number()
-    };
-    return joi.validate(recruiter,schema);
+    var schema2 = {};
+    if(i==1){
+        schema2 ={
+            recruiter_id: joi.number().integer(),
+            username: joi.string().min(3).max(30).required(),
+            password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+            email: joi.string().email({ minDomainAtoms: 2 }),
+            phoneno: joi.number()
+        };
+
+    }
+    if(i==2){
+        schema2 ={
+            username: joi.string().min(3).max(30).required(),
+            password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+            email: joi.string().email({ minDomainAtoms: 2 }),
+            phoneno: joi.number()
+        };
+
+    }
+    return joi.validate(recruiter,schema2);
 }
 function validatecompany(company){
-    const schema2 ={
+    const schema3 ={
         company_id: joi.number().integer(),
-        company_name: Joi.string().min(3).max(30).required(),
+        company_name: joi.string().min(3).max(30).required(),
         description: joi.string()
     };
-    return joi.validate(company,schema);
+    return joi.validate(company,schema3);
 } 
 function validatejob(jobs){
-    const schema3 ={
+    const schema4 ={
         job_id: joi.number().integer(),
         jobname: joi.string(),
         salary: joi.number(),
@@ -547,8 +581,9 @@ function validatejob(jobs){
         availability: joi.string(),
         skill: joi.string()
     };
-    return joi.validate(jobs,schema);
+    return joi.validate(jobs,schema4);
 }  
 // port enivronment variable
 const port = process.env.PORT || 8080;
 app.listen(port,() => console.log(`Listen on port ${port}...`));
+module.exports = app;
