@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Expense</title>
+</head>
+<body>
+    <form>
+        <label for="simple" >Billing :</label>
+        <select id="id" name="simple">
+            <option selected>Talview</option>
+            <option>Client</option>
+          </select> <br>
+          <label for="category" >Expense Category:</label>
+        <select id="category" name="category">
+            <option selected>Travel</option>
+            <option>Food</option>
+            <option>Stay</option>
+            <option>Others</option>
+          </select> <br>
+          <label for="remark">Remark:</label>
+          <textarea name="remark" cols="40" rows="5"></textarea><br>
+          <label for="invoice">Bills & Invoice: </label>
+          <input type="file" id="invoice" name="invoice"><br>
+          <label for="billdate">BillDate:</label>
+          <input type="date" id="billdate" name="billdate"><br>
+          <fieldset style="border: 0px;">
+              <legend><h3>Food:</h3></legend>
+              <p>
+                <label for="dinner_count">No of Dinners: </label>
+                <input type="number" name="dinner_count" id="dinner_count" min="1">
+              </p>
+          </fieldset>
+          <fieldset style="border: 0px;">
+            <legend><h3>Travel:</h3></legend>
+            <p>
+              <label for="mode">Mode: </label>
+              <select id="mode" name="mode">
+                <option selected>Cab</option>
+                <option>Bus</option>
+                <option>Flight</option>
+                <option>Other</option>
+              </select>
+            </p>
+            <p>
+                <label for="from">From:</label>
+                <input type="text" id="from" name="from">
+            </p>
+            <p>
+                <label for="to">To:</label>
+                <input type="text" id="to" name="to">
+            </p>
+        </fieldset>
+        <fieldset style="border: 0px;">
+            <legend><h3>Stay:</h3></legend>
+            <p>
+              <label for="from_date">From: &nbsp</label>
+              <input type="date" name="from_date" id="from_date">
+              <label for="to_date">&nbsp&nbsp To:</label>
+              <input type="date" name="to_date" id="to_date">
+            </p>
+            <p>
+                <label for="place">Place of Stay:</label>
+                <input type="text" id="place" name="place">
+            </p>
+            <p>
+                <label for="dest">Destination:</label><br>
+                <label for="destc">City:</label>
+                <input type="text" id="destc" name="destc"><br>
+                <label for="dests">State:</label>
+                <input type="text" id="dests" name="dests"><br>
+                <label for="destcoun">Country:</label>
+                <input type="text" id="destcoun" name="destcoun">
+            </p>
+        </fieldset>
+        <input type="submit" value="Submit" name="submit" id="submit">
+        <input type="reset" value="Clear" name="clear" id="submit">
+    </form>
+</body>
+</html>
