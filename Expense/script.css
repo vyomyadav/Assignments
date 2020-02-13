@@ -1,0 +1,58 @@
+h1{
+    margin-left: 42.5%;
+}
+#form-box{
+    margin-left: 40%;
+    margin-top: 5%;
+}
+#id{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+.category1{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+#category{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+
+#invoice{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+#billdate{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+fieldset{
+    margin-left: .5%;
+    margin-bottom: 1%;
+}
+#submit{
+    margin-left: 6% ;
+    margin-bottom: 1%;
+}
+#submit1{
+    margin-left: 2%;
+}
+#textarea *{
+    vertical-align: middle;
+}
+#textarea textarea{
+    margin-left: 20px;
+    margin-bottom: 1%;
+    resize: both;
+}
+#to{
+    margin-left: 2%;
+}
+#amount{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+#more_fields{
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
